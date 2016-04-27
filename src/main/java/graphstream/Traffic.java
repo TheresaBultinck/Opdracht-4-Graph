@@ -4,17 +4,24 @@ import java.util.Random;
 
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Graph;
+import org.graphstream.graph.Node;
+import org.graphstream.graph.Path;
 import org.graphstream.graph.implementations.MultiGraph;
+import org.graphstream.algorithm.Dijkstra;
 
 
 public class Traffic {
 
 	private Graph graph;
 	private Random random; 
+	private Dijkstra algo;
+	private Path path; 
 	
 	public Traffic(){
 		graph = new MultiGraph("Belgium");
 		random = new Random();
+		algo = new Dijkstra(Dijkstra.Element.EDGE, null, "weight");
+		path = null;
 		initialize(graph);
 		initializeAccidents();
 	}
@@ -35,6 +42,8 @@ public class Traffic {
 			if(i == rng){
 				int w = e.getAttribute("weight");
 				e.setAttribute("weight", w+1);
+				System.out.println("1K cars added to " + e.getId());
+				System.out.println("Total weight: " + (w+1));
 				break;
 			}
 		i++;
@@ -48,19 +57,64 @@ public class Traffic {
 		for(Edge e: graph.getEachEdge()){
 			int w = e.getAttribute("weight");
 			double accidentPercentage = 0.1*w;
-			double rng = random.nextDouble();
-			if(accidentPercentage < rng){
+			double rng = random.nextDouble() *100;
+			if(accidentPercentage > rng){
+				int extraWeight = 0;
 				if (e.getAttribute("accident")){
-					e.setAttribute("weight", w+50);
+					extraWeight = 50;
 				} else {
-					e.setAttribute("weight", w+30);
+					extraWeight = 30;
 				}
+				
+				e.setAttribute("weight", w+extraWeight);
+				
+				System.out.println("Accident on road: " + e.getId());
+				System.out.println("Total weight: " + (w+extraWeight));
 			} 
 		}
 	}
 	
 	public void Display(){
 		graph.display();
+	}
+	
+	public void doDijkstra(String from, String to){
+        algo.init(graph);
+        algo.setSource(graph.getNode(from));
+        algo.compute();
+        
+        this.path = algo.getPath(graph.getNode(to));
+        
+        algo.clear();
+        prettyPrintPath();
+	}
+	
+	public void visualize(String nodeStyle, String edgeStyle){
+		if(path != null){
+			for (Node node : path.getEachNode())
+	 			node.addAttribute("ui.style", nodeStyle);
+	 		for (Edge edge : path.getEachEdge())
+	 			edge.addAttribute("ui.style", edgeStyle);
+		}
+	}
+	
+	private void prettyPrintPath(){
+		if (path == null){
+			return;
+		}
+		String prettyNodes = "";
+		for (Node n : path.getEachNode()){
+			prettyNodes += " => ";
+			prettyNodes += n.getId();
+		}
+		System.out.println(prettyNodes);
+		
+		String prettyEdges = "";
+		for (Edge e : path.getEachEdge()){
+			prettyEdges += " => ";
+			prettyEdges += e.getId();
+		}
+		System.out.println(prettyEdges);
 	}
 	
 	private  void initialize(Graph graph){
@@ -81,14 +135,14 @@ public class Traffic {
         graph.addEdge("Brugge-Kortrijk", "Brugge", "Kortrijk").setAttribute("weight", 56);
         graph.addEdge("Kortrijk-Brugge", "Kortrijk", "Brugge").setAttribute("weight", 56);
 
-        graph.addEdge("Brugge-Antwerpen", "Brugge", "Antwerpen").setAttribute("weight", 95);;
-        graph.addEdge("Antwerpen-Brugge", "Antwerpen", "Brugge").setAttribute("weight", 95);;
+        graph.addEdge("Brugge-Antwerpen", "Brugge", "Antwerpen").setAttribute("weight", 95);
+        graph.addEdge("Antwerpen-Brugge", "Antwerpen", "Brugge").setAttribute("weight", 95);
 
         graph.addEdge("Brugge-Gent", "Brugge", "Gent").setAttribute("weight", 50);
         graph.addEdge("Gent-Brugge", "Gent", "Brugge").setAttribute("weight", 50);
 
-        graph.addEdge("Kortrijk-Bergen", "Kortrijk", "Bergen").setAttribute("weight", 83);;
-        graph.addEdge("Bergen-Kortrijk", "Bergen", "Kortrijk").setAttribute("weight", 83);;
+        graph.addEdge("Kortrijk-Bergen", "Kortrijk", "Bergen").setAttribute("weight", 83);
+        graph.addEdge("Bergen-Kortrijk", "Bergen", "Kortrijk").setAttribute("weight", 83);
 
         graph.addEdge("Gent-Antwerpen", "Gent", "Antwerpen").setAttribute("weight", 60);
         graph.addEdge("Antwerpen-Gent", "Antwerpen", "Gent").setAttribute("weight",60);
