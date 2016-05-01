@@ -24,6 +24,8 @@ public class Traffic {
 		path = null;
 		initialize(graph);
 		initializeAccidents();
+		printNodeNames();
+		removeArrowVisualisation();
 	}
 	
 	private void initializeAccidents(){
@@ -31,6 +33,18 @@ public class Traffic {
 			e.setAttribute("accident", false);
 		}
 	}
+	
+	private void printNodeNames(){
+        for(Node n: graph.getEachNode()){
+            n.setAttribute("ui.style", "text-mode: normal;");
+        }
+    }
+    
+    private void removeArrowVisualisation(){
+        for (Edge e: graph.getEachEdge()){
+            e.setAttribute("ui.style", "arrow-shape: none;");
+        }
+    }
 	
 	/**
 	 * Add 1K cars to random edge.
@@ -117,76 +131,84 @@ public class Traffic {
 		System.out.println(prettyEdges);
 	}
 	
+	public boolean isValidLocation(String location){
+		for(Node n: graph.getEachNode()){
+			if(n.getId().equals(location))
+				return true;
+		} 
+		return false;
+	}
+	
 	private  void initialize(Graph graph){
-    	graph.addNode("Brugge");
-        graph.addNode("Kortrijk");
-        graph.addNode("Gent");
-        graph.addNode("Bergen");
-        graph.addNode("Brussel");
-        graph.addNode("Antwerpen");
-        graph.addNode("Hasselt");
-        graph.addNode("Leuven");
-        graph.addNode("Luik");
-        graph.addNode("Namen");
-        graph.addNode("Waver");
-        graph.addNode("Neufchateau");
-        graph.addNode("Aarlen");
+		graph.addNode("Brugge").setAttribute("ui.label", "Brugge");
+        graph.addNode("Kortrijk").setAttribute("ui.label", "Kortrijk");
+        graph.addNode("Gent").setAttribute("ui.label", "Gent");
+        graph.addNode("Bergen").setAttribute("ui.label", "Bergen");
+        graph.addNode("Brussel").setAttribute("ui.label", "Brussel");
+        graph.addNode("Antwerpen").setAttribute("ui.label", "Antwerpen");
+        graph.addNode("Hasselt").setAttribute("ui.label", "Hasselt");
+        graph.addNode("Leuven").setAttribute("ui.label", "Leuven");
+        graph.addNode("Luik").setAttribute("ui.label", "Luik");
+        graph.addNode("Namen").setAttribute("ui.label", "Namen");
+        graph.addNode("Waver").setAttribute("ui.label", "Waver");
+        graph.addNode("Neufchateau").setAttribute("ui.label", "Neufchateau");
+        graph.addNode("Aarlen").setAttribute("ui.label", "Aarlen");
 
-        graph.addEdge("Brugge-Kortrijk", "Brugge", "Kortrijk").setAttribute("weight", 56);
-        graph.addEdge("Kortrijk-Brugge", "Kortrijk", "Brugge").setAttribute("weight", 56);
+        graph.addEdge("Brugge-Kortrijk", "Brugge", "Kortrijk",true).setAttribute("weight", 56);
+        graph.addEdge("Kortrijk-Brugge", "Kortrijk", "Brugge",true).setAttribute("weight", 56);
 
-        graph.addEdge("Brugge-Antwerpen", "Brugge", "Antwerpen").setAttribute("weight", 95);
-        graph.addEdge("Antwerpen-Brugge", "Antwerpen", "Brugge").setAttribute("weight", 95);
+        graph.addEdge("Brugge-Antwerpen", "Brugge", "Antwerpen",true).setAttribute("weight", 95);
+        graph.addEdge("Antwerpen-Brugge", "Antwerpen", "Brugge",true).setAttribute("weight", 95);
 
-        graph.addEdge("Brugge-Gent", "Brugge", "Gent").setAttribute("weight", 50);
-        graph.addEdge("Gent-Brugge", "Gent", "Brugge").setAttribute("weight", 50);
+        graph.addEdge("Brugge-Gent", "Brugge", "Gent",true).setAttribute("weight", 50);
+        graph.addEdge("Gent-Brugge", "Gent", "Brugge",true).setAttribute("weight", 50);
 
-        graph.addEdge("Kortrijk-Bergen", "Kortrijk", "Bergen").setAttribute("weight", 83);
-        graph.addEdge("Bergen-Kortrijk", "Bergen", "Kortrijk").setAttribute("weight", 83);
+        graph.addEdge("Kortrijk-Bergen", "Kortrijk", "Bergen",true).setAttribute("weight", 83);
+        graph.addEdge("Bergen-Kortrijk", "Bergen", "Kortrijk",true).setAttribute("weight", 83);
 
-        graph.addEdge("Gent-Antwerpen", "Gent", "Antwerpen").setAttribute("weight", 60);
-        graph.addEdge("Antwerpen-Gent", "Antwerpen", "Gent").setAttribute("weight",60);
+        graph.addEdge("Gent-Antwerpen", "Gent", "Antwerpen",true).setAttribute("weight", 60);
+        graph.addEdge("Antwerpen-Gent", "Antwerpen", "Gent",true).setAttribute("weight",60);
 
-        graph.addEdge("Gent-Brussel", "Gent", "Brussel").setAttribute("weight", 50);
-        graph.addEdge("Brussel-Gent", "Brussel", "Gent").setAttribute("weight", 50);
+        graph.addEdge("Gent-Brussel", "Gent", "Brussel",true).setAttribute("weight", 50);
+        graph.addEdge("Brussel-Gent", "Brussel", "Gent",true).setAttribute("weight", 50);
         
-        graph.addEdge("Antwerpen-Hasselt", "Antwerpen", "Hasselt").setAttribute("weight", 80);
-        graph.addEdge("Hasselt-Antwerpen", "Hasselt", "Antwerpen").setAttribute("weight", 80);
+        graph.addEdge("Antwerpen-Hasselt", "Antwerpen", "Hasselt",true).setAttribute("weight", 80);
+        graph.addEdge("Hasselt-Antwerpen", "Hasselt", "Antwerpen",true).setAttribute("weight", 80);
         
-        graph.addEdge("Brussel-Hasselt", "Brussel", "Hasselt").setAttribute("weight",89);
-        graph.addEdge("Hasselt-Brussel", "Hasselt", "Brussel").setAttribute("weight", 89);
+        graph.addEdge("Brussel-Hasselt", "Brussel", "Hasselt",true).setAttribute("weight",89);
+        graph.addEdge("Hasselt-Brussel", "Hasselt", "Brussel",true).setAttribute("weight", 89);
         
-        graph.addEdge("Brussel-Waver", "Brussel", "Waver").setAttribute("weight",30);
-        graph.addEdge("Waver-Brussel", "Waver", "Brussel").setAttribute("weight",30);
+        graph.addEdge("Brussel-Waver", "Brussel", "Waver",true).setAttribute("weight",30);
+        graph.addEdge("Waver-Brussel", "Waver", "Brussel",true).setAttribute("weight",30);
         
-        graph.addEdge("Brussel-Bergen", "Brussel", "Bergen").setAttribute("weight", 78);
-        graph.addEdge("Bergen-Brussel","Bergen","Brussel").setAttribute("weight", 78);
+        graph.addEdge("Brussel-Bergen", "Brussel", "Bergen",true).setAttribute("weight", 78);
+        graph.addEdge("Bergen-Brussel","Bergen","Brussel",true).setAttribute("weight", 78);
         
-        graph.addEdge("Brussel-Leuven", "Brussel", "Leuven").setAttribute("weight", 30);
-        graph.addEdge("Leuven-Brussel", "Leuven", "Brussel").setAttribute("weight",30);
+        graph.addEdge("Brussel-Leuven", "Brussel", "Leuven",true).setAttribute("weight", 30);
+        graph.addEdge("Leuven-Brussel", "Leuven", "Brussel",true).setAttribute("weight",30);
         
-        graph.addEdge("Leuven-Hasselt", "Leuven", "Hasselt").setAttribute("weight", 59);
-        graph.addEdge("Hasselt-Leuven", "Hasselt", "Leuven").setAttribute("weight", 59);
+        graph.addEdge("Leuven-Hasselt", "Leuven", "Hasselt",true).setAttribute("weight", 59);
+        graph.addEdge("Hasselt-Leuven", "Hasselt", "Leuven",true).setAttribute("weight", 59);
         
-        graph.addEdge("Leuven-Luik", "Leuven", "Luik").setAttribute("weight", 82);
-        graph.addEdge("Luik-Leuven", "Luik", "Leuven").setAttribute("weight", 82);
+        graph.addEdge("Leuven-Luik", "Leuven", "Luik",true).setAttribute("weight", 82);
+        graph.addEdge("Luik-Leuven", "Luik", "Leuven",true).setAttribute("weight", 82);
        
-        graph.addEdge("Waver-Namen", "Waver", "Namen").setAttribute("weight", 40);
-        graph.addEdge("Namen-Waver", "Namen", "Waver").setAttribute("weight", 40);
+        graph.addEdge("Waver-Namen", "Waver", "Namen",true).setAttribute("weight", 40);
+        graph.addEdge("Namen-Waver", "Namen", "Waver",true).setAttribute("weight", 40);
         
-        graph.addEdge("Bergen-Namen", "Bergen", "Namen").setAttribute("weight", 75);
-        graph.addEdge("Namen-Bergen", "Namen", "Bergen").setAttribute("weight",75);
+        graph.addEdge("Bergen-Namen", "Bergen", "Namen",true).setAttribute("weight", 75);
+        graph.addEdge("Namen-Bergen", "Namen", "Bergen",true).setAttribute("weight",75);
         
-        graph.addEdge("Namen-Luik", "Namen", "Luik").setAttribute("weight",65);
-        graph.addEdge("Luik-Namen", "Luik", "Namen").setAttribute("weight", 65);
+        graph.addEdge("Namen-Luik", "Namen", "Luik",true).setAttribute("weight",65);
+        graph.addEdge("Luik-Namen", "Luik", "Namen",true).setAttribute("weight", 65);
         
-        graph.addEdge("Namen-Neufchateau", "Namen", "Neufchateau").setAttribute("weight", 90);
-        graph.addEdge("Neufchateau-Namen", "Neufchateau", "Namen").setAttribute("weight", 90);
+        graph.addEdge("Namen-Neufchateau", "Namen", "Neufchateau",true).setAttribute("weight", 90);
+        graph.addEdge("Neufchateau-Namen", "Neufchateau", "Namen",true).setAttribute("weight", 90);
         
-        graph.addEdge("Luik-Neufchateau", "Luik", "Neufchateau").setAttribute("weight",110);
-        graph.addEdge("Neufchateau-Luik", "Neufchateau", "Luik").setAttribute("weight", 110);
+        graph.addEdge("Luik-Neufchateau", "Luik", "Neufchateau",true).setAttribute("weight",110);
+        graph.addEdge("Neufchateau-Luik", "Neufchateau", "Luik",true).setAttribute("weight", 110);
         
-        graph.addEdge("Neufchateau-Aarlen", "Neufchateau", "Aarlen").setAttribute("weight", 37);
-        graph.addEdge("Aarlen-Neufchateau", "Aarlen", "Neufchateau").setAttribute("weight",37);
+        graph.addEdge("Neufchateau-Aarlen", "Neufchateau", "Aarlen",true).setAttribute("weight", 37);
+        graph.addEdge("Aarlen-Neufchateau", "Aarlen", "Neufchateau",true).setAttribute("weight",37);
     }
 }
