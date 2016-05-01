@@ -34,6 +34,10 @@ public class Traffic {
 		}
 	}
 	
+	/**
+	 * Add the names of the cities next to the correct node in the graph
+	 */
+	
 	private void printNodeNames(){
         for(Node n: graph.getEachNode()){
             n.setAttribute("ui.style", "text-mode: normal;");
@@ -88,6 +92,9 @@ public class Traffic {
 		}
 	}
 	
+	/**
+	 * Displays the graph
+	 */
 	public void Display(){
 		graph.display();
 	}
@@ -103,6 +110,12 @@ public class Traffic {
         prettyPrintPath();
 	}
 	
+	/**
+	 * Visualize with a color the nodes and edges that are used for a specific path
+	 * @param nodeStyle color preference to indicate the used nodes
+	 * @param edgeStyle color preference to indicate the used edges 
+	 */
+	
 	public void visualize(String nodeStyle, String edgeStyle){
 		if(path != null){
 			for (Node node : path.getEachNode())
@@ -111,6 +124,10 @@ public class Traffic {
 	 			edge.addAttribute("ui.style", edgeStyle);
 		}
 	}
+	
+	/**
+	 * Prints the path that is maintained, in the output console, to go from a specific city to another  
+	 */
 	
 	private void prettyPrintPath(){
 		if (path == null){
@@ -131,6 +148,11 @@ public class Traffic {
 		System.out.println(prettyEdges);
 	}
 	
+	/**
+	 * Checks if the location that the user gives as an input is one of the cities that is on the graph
+	 * @param location input from the user 
+	 * @return true if the location is indeed on the graph, false if the location isn't on the graph
+	 */
 	public boolean isValidLocation(String location){
 		for(Node n: graph.getEachNode()){
 			if(n.getId().equals(location))
@@ -139,6 +161,10 @@ public class Traffic {
 		return false;
 	}
 	
+	/**
+	 * Initializes the graph with the specific edges and nodes 
+	 * @param graph 
+	 */
 	private  void initialize(Graph graph){
 		graph.addNode("Brugge").setAttribute("ui.label", "Brugge");
         graph.addNode("Kortrijk").setAttribute("ui.label", "Kortrijk");
